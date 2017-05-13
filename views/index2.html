@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+    <script src="/js/jquery.js"></script>
+</head>
+<body>
+    <div id="container">
+        <form>
+            用户名：<input type="text" id="username" name="username"><br>
+            密  码：<input type="password" id="password" name="password"><br>
+            性  别：<label><input type="radio" name="gender" value="male">男</label>
+                   <label><input type="radio" name="gender" value="female">女</label><br>
+            联系方式：<input type="number" id="tel" name="tel"><br>
+            出生日期：<input type="date" name="birthday" id="birthday"><br>
+            <input type="button" id="signIn" value="注 册">
+        </form>
+    </div>
+    <script>
+        $(function () {
+            $('#signIn').click(function () {
+                $.ajax({
+                    url: '/signin',
+                    method: 'POST',
+                    data: {
+                        username: $('#username').val(),
+                        password: $('#password').val(),
+                        gender: $('input[name="gender"]:checked').val(),
+                        tel: $('#tel').val(),
+                        birthday: $('#birthday').val()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

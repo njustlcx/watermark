@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jquery Ajax</title>
+    <script src="/js/jquery.js"></script>
+    <script></script>
+    <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <style>
+        .container {
+            margin: 0 auto;
+            width: 1000px;
+            height: 600px;
+            border: #9d9d9d solid;
+        }
+        .comment {
+            float: left;
+            /*position: absolute;*/
+            width: 400px;
+            height: 590px;
+            /*background-color: #4cae4c;*/
+            padding-left: 10px;
+            overflow-y: scroll;
+        }
+        .charts {
+            float: right;
+            /*position: absolute;*/
+            width: 550px;
+            height: 400px;
+            padding-right: 10px;
+        }
+        .resText {
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="comment">
+        <form id="form1" action="#">
+            <h1>评论：</h1>
+            <p>姓名：</p>
+            <p><input type="text" name="username" id="username"></p>
+            <p>内容：</p>
+            <p><textarea name="content" id="content" rows="10" cols="50"></textarea></p>
+            <p><input type="button" id="send" value="submit"></p>
+        </form>
+        已有评论：<br>
+        <div id="resText" class="resText" style="width: 300px; height: 500px; border: black 1px solid"></div>
+    </div>
+    <div id="charts" class="charts" style="min-width:400px;height:400px">
+
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#send').click(function () {
+            $.ajax({
+                url: '/ISBW',
+                method: 'POST',
+                success: function (data) {
+                    $('#resText').append(data);
+                    alert('评论成功！');
+                }
+            });
+        });
+    });
+    var chart = new Highcharts.Chart('charts', {
+        title: {
+            text: '不同城市的月平均气温',
+            x: -20
+        },
+        subtitle: {
+            text: '数据来源: WorldClimate.com',
+            x: -20
+        },
+        xAxis: {
+            categories:
+        },
+        yAxis: {
+            title: {
+                text: '温度 (°C)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '°C'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: '东京',
+            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        }, {
+            name: '纽约',
+            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+        }, {
+            name: '柏林',
+            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+        }, {
+            name: '伦敦',
+            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+        }]
+    });
+</script>
+</body>
+</html>

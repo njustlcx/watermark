@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WaterMark</title>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/highcharts.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+    <style>
+        .form {
+            width: 100px;
+            height: auto;
+            float: left;
+            margin-left: 5px;
+        }
+        .figure {
+            width: 600px;
+            height: 500px;
+            float: right;
+            margin-right: 5px;
+            overflow-y: scroll;
+            border: solid 2px;
+        }
+        .water {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="water" style="width: 800px; height: 600px; margin: 0 auto">
+        <h1 style="text-align: center">网络流水印技术分析</h1>
+        <div class="form">
+            <form>
+                <!--mu: <input type="number" id="mu"><br>-->
+                <!--sigma: <input type="number" id="sigma"><br>-->
+                <!--num: <input type="number" id="num"><br>-->
+                <input type="button" id="analysis" value="分析">
+            </form>
+        </div>
+        <div class="figure" id="figure">
+            <div id="figure1" style="min-width:400px;height:400px"></div>
+            <div id="figure2" style="min-width:400px;height:400px"></div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('#analysis').click(function () {
+                $.ajax({
+                    url: '/ISBW',
+                    method: 'POST',
+                    success: function (data) {
+                        alert(data);
+                        $('#figure1').highcharts({
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: ''
+                            },
+                            xAxis: {
+                                categories: data.x,
+                                crosshair: true
+                            },
+                            yAxis: {
+                                min: 0,
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                                pointFormat: '<tr><td style="color:{series.color};padding:0"></td>' +
+                                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                                footerFormat: '</table>',
+                                shared: true,
+                                useHTML: true
+                            },
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0.2,
+                                    borderWidth: 0
+                                }
+                            },
+                            series: [{
+                                name: '伪均匀分布',
+                                data: data.fx,
+                                color: 'blue'
+                            }]
+                        });
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>

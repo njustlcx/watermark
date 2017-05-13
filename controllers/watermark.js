@@ -55,7 +55,7 @@ module.exports = {
 
         // 随机函数，从0到2n-1中随机选出n个不同的数
         function groupA(n) {
-            let A = [];
+            var A = [];
             for (var i = 0; i < 2 * n; i++) {
                 A.push(i);
             }
@@ -151,7 +151,17 @@ module.exports = {
             x: x,
             fx: fx
         };
+        let sum = 0;
+        for (let i = 0; i < T; i ++) {
+            sum += x[i] * fx[i];
+        }
+        console.log(sum / pNum);
+        
+        function cent() {
+            
+        }
         ctx.response.type = 'application/json';
         ctx.response.body = JSON.stringify(data, null, 4);
+        await next();
     }
 };

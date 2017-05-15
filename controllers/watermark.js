@@ -156,10 +156,94 @@ module.exports = {
             sum += x[i] * fx[i];
         }
         console.log(sum / pNum);
-        
-        function cent() {
-            
+
+        // 计算时隙i的时隙质心
+        /**
+         * @param index 要计算的时隙质心对应时隙的编号
+         * @param group 时隙分组
+         * @param T 时隙长度
+         * @returns {number}
+         */
+        function cent(index, group, T) {
+            // 找出该时隙内的所有数据包
+            let sum = 0, cnt = 0;
+            for (i in group) {
+                if (group[i].index === index) {
+                    sum += group[i].t1;
+                    cnt ++;
+                }
+            }
+            if (cnt === 0) {
+                return T / 2;
+            }
+            return sum / cnt;
         }
+        // 求Ai的时隙质心
+        let A2 = [], B2 = [];
+        for (let i = 0; i < A.length;) {
+            // 求得每个Ai和Bi的时隙编号
+            let j, temp1 = [], temp2 = [];
+            for (j = i; j < i + r; j ++) {
+                temp1.push(A[j]);
+                temp2.push(B[j]);
+            }
+            A2.push(temp1);
+            B2.push(temp2);
+            i = j;
+        }
+        // console.log(A2);
+        // console.log(B2);
+        // console.log(A2[0].length);
+        // 求出各时隙对应的数据包
+        let GroupA = [], GroupB = [];
+        function group2(A2, A1) {
+            let GroupA = [];
+            for (let i in A2) {
+                let t = [];
+                for (let j in A2[i]) {
+                    let t1  = {id: A2[i][j], pkg: [], num: 0};
+                    for (let k in A1) {
+                        if (A2[i][j] === A1[k].index) {
+                            t1.pkg.push(A1[k]);
+                        }
+                    }
+                    t1.num = t1.pkg.length;
+                    t.push(t1);
+                }
+                GroupA.push(t);
+            }
+            return GroupA;
+        }
+
+        GroupA = group2(A2, A1);
+        GroupB = group2(B2, B1);
+        data.groupA = GroupA;
+        data.groupB = GroupB;
+
+        // 水印编码，求时隙质心
+        function Cent(GroupA) {
+            let centA = [];
+            for (let i in GroupA) {
+                let sum = 0, cnt = 0;
+                for (let j in GroupA[i]) {
+                    let sum2 = 0;
+                    let obj = GroupA[i][j];
+                    for (let k in obj.pkg) {
+                        sum2 += (obj.pkg[k].t1 - o) % T;
+                    }
+                    cnt += obj.num;
+                    sum += sum2;
+                }
+                sum /= cnt;
+                centA.push(sum);
+            }
+            return centA;
+        }
+
+        let centA = Cent(GroupA);
+        let centB = Cent(GroupB);
+        console.log(centA);
+        console.log(centB);
         ctx.response.type = 'application/json';
         ctx.response.body = JSON.stringify(data, null, 4);
         await next();

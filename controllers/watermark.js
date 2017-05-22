@@ -41,7 +41,7 @@ module.exports = {
                 temp = -1;
             waterMark.push(temp);
         }
-        let o = 10000, T = 500, l = 32, r = 12;
+        let o = 10000, T = 1000, l = 32, r = 4;
         // interval[i]: 第i个时隙开始的时间
         let interval = [10000];
         let n = l * r;
@@ -230,6 +230,7 @@ module.exports = {
                     let obj = GroupA[i][j];
                     for (let k in obj.pkg) {
                         sum2 += (obj.pkg[k].t1 - o) % T;
+                        obj.pkg[k].deltaT = (obj.pkg[k].t1 - o) % T;
                     }
                     cnt += obj.num;
                     sum += sum2;
@@ -244,6 +245,79 @@ module.exports = {
         let centB = Cent(GroupB);
         console.log(centA);
         console.log(centB);
+        let Y = [];
+        for (let i in centA) {
+            Y.push(centA[i] - centB[i]);
+        }
+        console.log(Y);
+        let s = 0;
+        for (let i in Y) {
+            s += Y[i];
+        }
+        console.log(s / 32);
+        // 进行延时处理
+// 延时函数
+        function myDelay(group, index, a) {
+            for (let j in group[index]) {
+                let obj = group[index][j];
+                for (let k in obj.pkg) {
+                    obj.pkg[k].deltaT = a + (T - a) * obj.pkg[k].deltaT / T;
+                }
+            }
+        }
+// 求出延时后的时隙质心
+        function Cent2(GroupA) {
+            let centA = [];
+            for (let i in GroupA) {
+                let sum = 0, cnt = 0;
+                for (let j in GroupA[i]) {
+                    let sum2 = 0;
+                    let obj = GroupA[i][j];
+                    for (let k in obj.pkg) {
+                        // sum2 += (obj.pkg[k].t1 - o) % T;
+                        // obj.pkg[k].deltaT = (obj.pkg[k].t1 - o) % T;
+                        sum2 += obj.pkg[k].deltaT;
+                    }
+                    cnt += obj.num;
+                    sum += sum2;
+                }
+                sum /= cnt;
+                centA.push(sum);
+            }
+            return centA;
+        }
+
+        let a = 150;
+        for (let i in waterMark) {
+            // 如果要嵌入的水印编码是1，那么对时隙组Ai进行时延
+            if (waterMark[i] === 1) {
+                myDelay(GroupA, i, a);
+            } else if (waterMark[i] === -1) {
+                myDelay(GroupB, i, a);
+            }
+        }
+
+        let centA1 = Cent2(GroupA);
+        let centB1 = Cent2(GroupB);
+        let Y1 = [], waterMark2 = [];
+        for (let i in centA1) {
+            Y1.push(centA1[i] - centB1[i]);
+            if (centA1[i] - centB1[i] < 0) {
+                waterMark2.push(-1);
+            } else {
+                waterMark2.push(1);
+            }
+        }
+        console.log(waterMark.length + ' ' + waterMark2.length);
+        console.log(JSON.stringify(waterMark));
+        console.log(JSON.stringify(waterMark2));
+        let ans = 0;
+        for (let i in waterMark2) {
+            if (waterMark2[i] != waterMark[i]) {
+                ans ++;
+            }
+        }
+        console.log(ans);
         ctx.response.type = 'application/json';
         ctx.response.body = JSON.stringify(data, null, 4);
         await next();

@@ -7,9 +7,10 @@
     <script src="/js/highcharts.js"></script>
     <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
     <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css">
     <style>
         .form {
-            width: 100px;
+            width: auto;
             height: auto;
             float: left;
             margin-left: 5px;
@@ -22,22 +23,73 @@
             overflow-y: scroll;
             border: solid 2px;
         }
-        .water {
-            background-color: yellow;
-        }
     </style>
 </head>
 <body>
-    <div class="water" style="width: 800px; height: 600px; margin: 0 auto">
-        <h1 style="text-align: center">网络流水印技术分析</h1>
-        <div class="form">
-            <form>
-                <!--mu: <input type="number" id="mu"><br>-->
-                <!--sigma: <input type="number" id="sigma"><br>-->
-                <!--num: <input type="number" id="num"><br>-->
-                <input type="button" id="analysis" value="分析">
-            </form>
+    <div class="container">
+        <div class="page-header">
+            <h1>网络流水印技术分析</h1>
         </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">水印参数配置</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="form-horizontal" for="interval">时隙长度</label>
+                            <select class="form-control" id="interval">
+                                <option>300</option>
+                                <option>350</option>
+                                <option>400</option>
+                                <option>450</option>
+                                <option>500</option>
+                                <option>550</option>
+                                <option>600</option>
+                                <option>650</option>
+                                <option>700</option>
+                                <option>750</option>
+                                <option>800</option>
+                                <option>850</option>
+                                <option>900</option>
+                                <option>950</option>
+                                <option>1000</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-horizontal" for="r">冗余度</label>
+                            <select class="form-control" id="r">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-horizontal" for="a">调制幅度</label>
+                            <select class="form-control" id="a">
+                                <option>50</option>
+                                <option>100</option>
+                                <option>150</option>
+                                <option>200</option>
+                                <option>250</option>
+                                <option>300</option>
+                                <option>350</option>
+                                <option>400</option>
+                            </select>
+                        </div>
+                        <input class="btn btn-success" type="button" id="analysis" value="分析">
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div class="figure" id="figure">
             <div id="figure1" style="min-width:400px;height:400px"></div>
             <div id="figure2" style="min-width:400px;height:400px"></div>
@@ -49,6 +101,11 @@
                 $.ajax({
                     url: '/ISBW',
                     method: 'POST',
+                    data: {
+                        r: $('#r').val(),
+                        T: $('#interval').val(),
+                        a: $('#a').val()
+                    },
                     success: function (data) {
                         console.log(data);
                         $('#figure1').highcharts({

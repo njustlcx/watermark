@@ -41,7 +41,7 @@ module.exports = {
                 temp = -1;
             waterMark.push(temp);
         }
-        let o = 10000, T = 1000, l = 32, r = 4;
+        let o = 10000, T = parseInt(ctx.request.body.T, 10), l = 32, r = parseInt(ctx.request.body.r, 10);
         // interval[i]: 第i个时隙开始的时间
         let interval = [10000];
         let n = l * r;
@@ -116,7 +116,7 @@ module.exports = {
         for (var i = 0; i < pNum; i ++) {
             let temp = {};
             // 数据包的绝对时间戳
-            temp.t1 = Math.round(Math.random() * 2 * n * T + o);
+            temp.t1 = Math.round(Math.random() * 2 * n * T) + o;
             // 计算数据包的所属时隙
             for (var j = 0; j < interval.length -1; j ++) {
                 if (temp.t1 >= interval[j] && temp.t1 < interval[j + 1]) {
@@ -287,7 +287,7 @@ module.exports = {
             return centA;
         }
 
-        let a = 150;
+        let a = parseInt(ctx.request.body.a, 10);
         for (let i in waterMark) {
             // 如果要嵌入的水印编码是1，那么对时隙组Ai进行时延
             if (waterMark[i] === 1) {

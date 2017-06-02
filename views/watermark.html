@@ -99,24 +99,16 @@
         $(function () {
             $('#analysis').click(function () {
                 $.ajax({
-                    url: '/ISBW',
+                    url: '/ISBW5',
                     method: 'POST',
-                    data: {
-                        r: $('#r').val(),
-                        T: $('#interval').val(),
-                        a: $('#a').val()
-                    },
                     success: function (data) {
                         console.log(data);
                         $('#figure1').highcharts({
-                            chart: {
-                                type: 'column'
-                            },
                             title: {
                                 text: ''
                             },
                             xAxis: {
-                                categories: data.x,
+                                categories: data.categories,
                                 crosshair: true
                             },
                             yAxis: {
@@ -130,17 +122,19 @@
                                 shared: true,
                                 useHTML: true
                             },
+                            legend: {
+                                layout: 'vertical',
+                                align: 'right',
+                                verticalAlign: 'middle',
+                                borderWidth: 0
+                            },
                             plotOptions: {
                                 column: {
                                     pointPadding: 0.2,
                                     borderWidth: 0
                                 }
                             },
-                            series: [{
-                                name: '伪均匀分布',
-                                data: data.fx,
-                                color: 'blue'
-                            }]
+                            series: data.series
                         });
                     }
                 });

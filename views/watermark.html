@@ -15,14 +15,14 @@
             float: left;
             margin-left: 5px;
         }
-        .figure {
-            width: 600px;
-            height: 500px;
-            float: right;
-            margin-right: 5px;
-            overflow-y: scroll;
-            border: solid 2px;
-        }
+        /*.figure {*/
+            /*width: 600px;*/
+            /*height: 500px;*/
+            /*float: right;*/
+            /*margin-right: 5px;*/
+            /*overflow-y: scroll;*/
+            /*border: solid 2px;*/
+        /*}*/
     </style>
 </head>
 <body>
@@ -37,73 +37,117 @@
             <div class="panel-body">
                 <div class="form">
                     <form class="form-inline" role="form">
-                        <div class="form-group">
-                            <label class="form-horizontal" for="interval">时隙长度</label>
-                            <select class="form-control" id="interval">
-                                <option>300</option>
-                                <option>350</option>
-                                <option>400</option>
-                                <option>450</option>
-                                <option>500</option>
-                                <option>550</option>
-                                <option>600</option>
-                                <option>650</option>
-                                <option>700</option>
-                                <option>750</option>
-                                <option>800</option>
-                                <option>850</option>
-                                <option>900</option>
-                                <option>950</option>
-                                <option>1000</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-horizontal" for="r">冗余度</label>
-                            <select class="form-control" id="r">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                                <option>7</option>
-                                <option>8</option>
-                                <option>9</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-horizontal" for="a">调制幅度</label>
-                            <select class="form-control" id="a">
-                                <option>50</option>
-                                <option>100</option>
-                                <option>150</option>
-                                <option>200</option>
-                                <option>250</option>
-                                <option>300</option>
-                                <option>350</option>
-                                <option>400</option>
-                            </select>
-                        </div>
-                        <input class="btn btn-success" type="button" id="analysis" value="分析">
+                        <input class="btn btn-success" type="button" id="analysis" value="冗余度分析">
+                        <input class="btn btn-success" type="button" id="analysis1" value="时隙长度分析">
+                        <input class="btn btn-success" type="button" id="analysis2" value="调制幅度分析">
                     </form>
                 </div>
             </div>
         </div>
 
-        <div class="figure" id="figure">
+        <div class="figure" id="figure" style="margin: 0 auto">
             <div id="figure1" style="min-width:400px;height:400px"></div>
             <div id="figure2" style="min-width:400px;height:400px"></div>
+            <div id="figure3" style="min-width:400px;height:400px"></div>
         </div>
     </div>
     <script>
         $(function () {
             $('#analysis').click(function () {
                 $.ajax({
-                    url: '/ISBW5',
+                    url: '/ISBW3',
                     method: 'POST',
                     success: function (data) {
                         console.log(data);
                         $('#figure1').highcharts({
+                            title: {
+                                text: ''
+                            },
+                            xAxis: {
+                                categories: data.categories,
+                                crosshair: true
+                            },
+                            yAxis: {
+                                min: 0,
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                                pointFormat: '<tr><td style="color:{series.color};padding:0"></td>' +
+                                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                                footerFormat: '</table>',
+                                shared: true,
+                                useHTML: true
+                            },
+                            legend: {
+                                layout: 'vertical',
+                                align: 'right',
+                                verticalAlign: 'middle',
+                                borderWidth: 0
+                            },
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0.2,
+                                    borderWidth: 0
+                                }
+                            },
+                            series: data.series
+                        });
+                    }
+                });
+            });
+        });
+        $(function () {
+            $('#analysis1').click(function () {
+                $.ajax({
+                    url: '/ISBW4',
+                    method: 'POST',
+                    success: function (data) {
+                        console.log(data);
+                        $('#figure2').highcharts({
+                            title: {
+                                text: ''
+                            },
+                            xAxis: {
+                                categories: data.categories,
+                                crosshair: true
+                            },
+                            yAxis: {
+                                min: 0,
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                                pointFormat: '<tr><td style="color:{series.color};padding:0"></td>' +
+                                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                                footerFormat: '</table>',
+                                shared: true,
+                                useHTML: true
+                            },
+                            legend: {
+                                layout: 'vertical',
+                                align: 'right',
+                                verticalAlign: 'middle',
+                                borderWidth: 0
+                            },
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0.2,
+                                    borderWidth: 0
+                                }
+                            },
+                            series: data.series
+                        });
+                    }
+                });
+            });
+        });
+        $(function () {
+            $('#analysis2').click(function () {
+                $.ajax({
+                    url: '/ISBW5',
+                    method: 'POST',
+                    success: function (data) {
+                        console.log(data);
+                        $('#figure3').highcharts({
                             title: {
                                 text: ''
                             },

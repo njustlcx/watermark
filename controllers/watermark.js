@@ -1279,7 +1279,7 @@ module.exports = {
     // 延时
     'POST /ISBW5': async (ctx, next) => {
         let AA = [];
-        for (let i = 50; i <= 200; i += 25) {
+        for (let i = 50; i <= 400; i += 25) {
             AA.push(i);
         }
         let result = [];

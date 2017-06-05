@@ -954,7 +954,7 @@ module.exports = {
     // 时隙长度的影响
     'POST /ISBW4': async (ctx, next) => {
         let t = [];
-        for (let i = 350; i <= 1200; i += 50) {
+        for (let i = 300; i <= 1200; i += 50) {
             t.push(i);
         }
         let result = [];
@@ -1286,7 +1286,7 @@ module.exports = {
 // let result1 = [0, 0, 0, 0, 0, 0];
 
         let o = 10000, r = 4, l = 32,
-            T = 500;
+            T = 1000;
 // let ii = 2;
         for (let ii = 0; ii <= AA.length; ii ++) {
             let result1 = [0, 0, 0, 0, 0, 0], a = AA[ii];

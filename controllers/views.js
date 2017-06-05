@@ -3,7 +3,7 @@
  */
 module.exports = {
     'GET /': async (ctx, next) => {
-        await ctx.render('index');
+        await ctx.render('watermark');
         next();
     },
     'GET /index2': async (ctx, next) => {

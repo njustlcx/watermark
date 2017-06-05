@@ -8,5 +8,15 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="highcharts-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="jquery-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="koa-bodyparser-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="koa-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="koa-router-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="koa-static-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="koa-views-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="node-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="vue" level="application" />
   </component>
 </module>

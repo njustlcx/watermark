@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="PROJECT" libraries="{highcharts-DefinitelyTyped, jquery, jquery-DefinitelyTyped, koa-DefinitelyTyped, koa-bodyparser-DefinitelyTyped, koa-router-DefinitelyTyped, koa-static-DefinitelyTyped, koa-views-DefinitelyTyped, node-DefinitelyTyped, vue}" />
+  </component>
+</project>
